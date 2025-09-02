@@ -1,0 +1,30 @@
+.upload-blog {
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 20px;
+}
+.upload-blog h2 {
+  margin-bottom: 15px;
+}
+.upload-blog form {
+  display: flex;
+  flex-direction: column;
+}
+.upload-blog input,
+.upload-blog textarea {
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.upload-blog button {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.upload-blog button:hover {
+  background: #0056b3;
+}
