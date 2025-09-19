@@ -12,7 +12,7 @@ connectDB();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
+// Routes 
 app.use('/api/users', userRoutes);
 
 app.get('/', (req, res) => {
