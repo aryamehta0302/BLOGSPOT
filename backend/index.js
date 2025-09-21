@@ -1,10 +1,15 @@
 const express = require('express');
+const cors = require('cors');
 const connectDB = require('./config/db');
 const userRoutes = require('./Routes/api/users');
 const blogRoutes = require('./Routes/api/blog');
 
+
 const app = express();
 const port = 3000;
+
+// Enable CORS for all origins
+app.use(cors());
 
 // Connect to the database
 connectDB();    
