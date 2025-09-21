@@ -3,7 +3,12 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
     name: String,
     email: String,
-    password: String
+    password: String,
+    gender: {
+        type: String,
+        enum: ["male", "female"],
+        required: true
+    }
 })
 
 const User = mongoose.model('User', userSchema);
