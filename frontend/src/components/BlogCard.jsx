@@ -5,6 +5,8 @@ import "./BlogCard.css";
 export default function BlogCard({ id, title, author, date, description, cover }) {
   const [votes, setVotes] = useState(0);
   const [bookmarked, setBookmarked] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   // Load bookmark state from localStorage
   useEffect(() => {
@@ -23,22 +25,55 @@ export default function BlogCard({ id, title, author, date, description, cover }
     setBookmarked(!bookmarked);
   };
 
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+    setImageError(false);
+  };
+
+  const handleImageError = () => {
+    setImageError(true);
+    setImageLoaded(false);
+  };
+
   return (
     <div className="blog-card">
-      {cover && <img src={cover} alt={title} className="cover" />}
-      <div className="content">
-        <h2>{title}</h2>
-        <p className="meta">By {author} • {date}</p>
-        <p className="desc">{description}</p>
-
-        <div className="actions">
-          <button className="upvote" onClick={() => setVotes(votes + 1)}>🔼 {votes}</button>
-          <button className="bookmark-btn" onClick={toggleBookmark}>
-            {bookmarked ? "🔖 Saved" : "🔖 Bookmark"}
-          </button>
-          <Link to={`/blog/${id}`} className="read-more">Read More →</Link>
+      <div className="blog-content">
+        <div className="author-info">
+          <div className="author-avatar">
+            <span>{author.charAt(0).toUpperCase()}</span>
+          </div>
+          <span className="author-name">{author}</span>
+        </div>
+        
+        <div className="blog-main">
+          <h2>{title}</h2>
+          <p className="desc">{description}</p>
+          
+          <div className="blog-footer">
+            <span className="date">{date}</span>
+            <div className="actions">
+              <button className="upvote" onClick={() => setVotes(votes + 1)}>🔼 {votes}</button>
+              <button className="bookmark-btn" onClick={toggleBookmark}>
+                {bookmarked ? "🔖" : "🔖"}
+              </button>
+              <Link to={`/blog-details/${id}`} className="read-more">Read More →</Link>
+            </div>
+          </div>
         </div>
       </div>
+      
+      {cover && !imageError && (
+        <div className="blog-image">
+          <img 
+            src={cover} 
+            alt={title} 
+            className="cover"
+            onLoad={handleImageLoad}
+            onError={handleImageError}
+            style={{ display: imageLoaded ? 'block' : 'none' }}
+          />
+        </div>
+      )}
     </div>
   );
 }
