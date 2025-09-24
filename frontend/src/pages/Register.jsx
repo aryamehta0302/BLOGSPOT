@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 
@@ -8,29 +8,67 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [gender, setGender] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const validateEmail = (email) => {
+    return email.endsWith('@gmail.com');
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
-    if (!gender) {
-      setMessage("Please select a gender.");
+    setLoading(true);
+
+    // Validation
+    if (!name || !email || !password || !gender) {
+      setMessage("All fields are required.");
+      setLoading(false);
       return;
     }
+
+    if (!validateEmail(email)) {
+      setMessage("Please use a valid @gmail.com email address.");
+      setLoading(false);
+      return;
+    }
+
+    if (password.length < 6) {
+      setMessage("Password must be at least 6 characters long.");
+      setLoading(false);
+      return;
+    }
+
     try {
-      const res = await axios.post("http://localhost:3000/api/users/create", {
+      const res = await axios.post("http://localhost:3000/api/users/register", {
         name,
         email,
         password,
         gender,
       });
-      setMessage("Registration successful!");
+      
+      // Store user data and token
+      localStorage.setItem('token', res.data.token);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+      
+      setMessage("Registration successful! Redirecting to login...");
+      
+      // Clear form
       setName("");
       setEmail("");
       setPassword("");
       setGender("");
+      
+      // Redirect to login after 2 seconds
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000);
+      
     } catch (err) {
-      console.log(err);
-      setMessage("Registration failed. Try again.");
+      const errorMessage = err.response?.data?.message || "Registration failed. Please try again.";
+      setMessage(errorMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -53,7 +91,7 @@ export default function Register() {
           <div className="auth-field">
             <input
               type="email"
-              placeholder="Email Address"
+              placeholder="Email Address (@gmail.com only)"
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
@@ -62,48 +100,50 @@ export default function Register() {
           <div className="auth-field">
             <input
               type="password"
-              placeholder="Password"
+              placeholder="Password (min. 6 characters)"
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
             />
           </div>
 
-          {/* Gender Selection */}
-          <div className="auth-field gender-section">
-            <label>
-              <input
-                type="radio"
-                name="gender"
-                value="male"
-                checked={gender === "male"}
-                onChange={() => setGender("male")}
-              />
-              Male
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="gender"
-                value="female"
-                checked={gender === "female"}
-                onChange={() => setGender("female")}
-              />
-              Female
-            </label>
+          {/* Enhanced Gender Selection */}
+          <div className="auth-field">
+            <label className="field-label">Gender</label>
+            <div className="gender-options">
+              <label className={`gender-option ${gender === "male" ? "selected" : ""}`}>
+                <input
+                  type="radio"
+                  name="gender"
+                  value="male"
+                  checked={gender === "male"}
+                  onChange={() => setGender("male")}
+                />
+                <span className="gender-text">👨 Male</span>
+              </label>
+              <label className={`gender-option ${gender === "female" ? "selected" : ""}`}>
+                <input
+                  type="radio"
+                  name="gender"
+                  value="female"
+                  checked={gender === "female"}
+                  onChange={() => setGender("female")}
+                />
+                <span className="gender-text">👩 Female</span>
+              </label>
+            </div>
           </div>
 
-          <button type="submit" className="btn btn-accent auth-btn">
-            Register
+          <button type="submit" className="btn btn-accent auth-btn" disabled={loading}>
+            {loading ? "Creating Account..." : "Register"}
           </button>
         </form>
 
         {message && (
           <p
-            style={{
-              marginTop: "1rem",
-              color: message.includes("success") ? "limegreen" : "red",
-            }}
+            className={`auth-message ${
+              message.includes("successful") ? "success" : "error"
+            }`}
           >
             {message}
           </p>
