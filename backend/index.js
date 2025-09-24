@@ -3,6 +3,7 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 const userRoutes = require('./Routes/api/users');
 const blogRoutes = require('./Routes/api/blog');
+const authRoute = require('./Routes/api/auth');
 
 
 const app = express();
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 // Routes 
 app.use('/api/users', userRoutes);
 app.use('/api/blogs', blogRoutes);
+app.use('/api/auth', authRoute);
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
