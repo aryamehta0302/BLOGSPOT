@@ -25,19 +25,21 @@ export default function App() {
 
   return (
     <Router>
-      <Navbar toggleTheme={toggleTheme} theme={theme} onSearch={setSearch} />
-      <main className="container">
-        <Routes>
-          <Route path="/" element={<Home search={search} />} />
-          <Route path="/add-blog" element={<AddBlog />} />
-          <Route path="/blog-details/:id" element={<BlogDetails />} />
-          <Route path="/bookmarks" element={<Bookmarks />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={<Profile />} />
-        </Routes>
-      </main>
-      <Footer />
+      <div className="app-wrapper">
+        <Navbar toggleTheme={toggleTheme} theme={theme} onSearch={setSearch} />
+        <main className="container main-content">
+          <Routes>
+            <Route path="/" element={<Home search={search} />} />
+            <Route path="/add-blog" element={<AddBlog />} />
+            <Route path="/blog-details/:id" element={<BlogDetails />} />
+            <Route path="/bookmarks" element={<Bookmarks />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
     </Router>
   );
 }
