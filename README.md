@@ -251,12 +251,24 @@ NODE_ENV=production
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 👨‍💻 Author
+## 👨‍💻 Contributors
 
-**Deval**
+This project was collaboratively developed by:
+
+**Arya Mehta** - Project Leader & Frontend Architect
+
+- GitHub: [@aryamehta0302](https://github.com/aryamehta0302)
+- Role: Architecture design, UI/UX design, and frontend implementation
+
+**Deval** - Full-Stack Developer & Integration Specialist
 
 - GitHub: [@Deval2211](https://github.com/Deval2211)
-- Email: your-email@gmail.com
+- Role: API connection between frontend and backend, database management, and deployment
+
+**Parth Panara** - Backend Developer
+
+- GitHub: [@parth-panara-1204](https://github.com/parth-panara-1204)
+- Role: Express.js server development and API mapping
 
 ## 🙏 Acknowledgments
 
