@@ -1,17 +1,26 @@
-import { Link } from "react-router-dom";
-import "./Login.css";
-
 export default function Login() {
   return (
     <div className="auth-page">
-      <div className="auth-card">
-        <h2>Login</h2>
+      <div className="card auth-card">
+        <h2 className="auth-title">Welcome Back 👋</h2>
+        <p className="auth-subtitle">Login to continue to your account</p>
+
         <form>
-          <input type="email" placeholder="Email" required />
-          <input type="password" placeholder="Password" required />
-          <button type="submit">Login</button>
+          <div className="auth-field">
+            <input type="email" placeholder="Email Address" required />
+          </div>
+          <div className="auth-field">
+            <input type="password" placeholder="Password" required />
+          </div>
+
+          <button type="submit" className="btn btn-primary auth-btn">
+            Login
+          </button>
         </form>
-        <p>Don't have an account? <Link to="/register">Register</Link></p>
+
+        <p className="auth-footer">
+          Don’t have an account? <a href="/register">Register</a>
+        </p>
       </div>
     </div>
   );

@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import "./Profile.css";
 import unknown from "../assets/unknown.jpg";
 import unknownMale from "../assets/unknown_male.jpg";
 import unknownFemale from "../assets/unknown_female.jpg";
@@ -15,7 +14,12 @@ export default function Profile() {
     }
   }, [profilePic]);
 
-  // Optionally, update gender and registration status from backend or context
+  // Decide which default image to show
+  let defaultImg = unknown;
+  if (isRegistered) {
+    if (gender === "male") defaultImg = unknownMale;
+    else if (gender === "female") defaultImg = unknownFemale;
+  }
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -26,25 +30,23 @@ export default function Profile() {
     }
   };
 
-  // Decide which default image to show
-  let defaultImg = unknown;
-  if (isRegistered) {
-    if (gender === "male") defaultImg = unknownMale;
-    else if (gender === "female") defaultImg = unknownFemale;
-  }
-
   return (
-    <div className="profile-page">
+    <div className="profile-page" style={{ textAlign: "center" }}>
       <h2>Your Profile</h2>
-      <div className="profile-card">
+      <div className="profile-card card">
         <img
           src={profilePic || defaultImg}
           alt="Profile"
           className="profile-pic"
         />
-        <label className="upload-btn">
+        <label className="btn btn-accent btn-sm" style={{ marginTop: "1rem" }}>
           Upload Photo
-          <input type="file" accept="image/*" onChange={handleImageUpload} />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            style={{ display: "none" }}
+          />
         </label>
       </div>
     </div>

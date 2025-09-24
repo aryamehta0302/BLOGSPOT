@@ -8,13 +8,15 @@ import Bookmarks from "./pages/Bookmarks";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
-import "./App.css";
+import AddBlog from "./pages/AddBlog";
+import "./theme.css";
 
 export default function App() {
   const [theme, setTheme] = useState("dark");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
-    document.body.setAttribute("data-theme", theme);
+    document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);
 
   const toggleTheme = () => {
@@ -23,21 +25,19 @@ export default function App() {
 
   return (
     <Router>
-      <div className="app-container">
-        <Navbar toggleTheme={toggleTheme} theme={theme} />
-        <main className="main-content">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/blog-details/:id" element={<BlogDetails />} />
-            <Route path="/blog-details" element={<BlogDetails />} />
-            <Route path="/bookmarks" element={<Bookmarks />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/profile" element={<Profile />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
+      <Navbar toggleTheme={toggleTheme} theme={theme} onSearch={setSearch} />
+      <main className="container">
+        <Routes>
+          <Route path="/" element={<Home search={search} />} />
+          <Route path="/add-blog" element={<AddBlog />} />
+          <Route path="/blog-details/:id" element={<BlogDetails />} />
+          <Route path="/bookmarks" element={<Bookmarks />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/profile" element={<Profile />} />
+        </Routes>
+      </main>
+      <Footer />
     </Router>
   );
 }

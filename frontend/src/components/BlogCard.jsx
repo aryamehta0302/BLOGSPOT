@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import "./BlogCard.css";
 
 export default function BlogCard({ id, title, author, date, description, cover }) {
   const [votes, setVotes] = useState(0);
@@ -36,44 +35,53 @@ export default function BlogCard({ id, title, author, date, description, cover }
   };
 
   return (
-    <div className="blog-card">
-      <div className="blog-content">
+    <div className="card blog-card">
+      <div className="blog-header">
         <div className="author-info">
           <div className="author-avatar">
             <span>{author.charAt(0).toUpperCase()}</span>
           </div>
           <span className="author-name">{author}</span>
         </div>
-        
-        <div className="blog-main">
-          <h2>{title}</h2>
-          <p className="desc">{description}</p>
-          
-          <div className="blog-footer">
-            <span className="date">{date}</span>
-            <div className="actions">
-              <button className="upvote" onClick={() => setVotes(votes + 1)}>🔼 {votes}</button>
-              <button className="bookmark-btn" onClick={toggleBookmark}>
-                {bookmarked ? "🔖" : "🔖"}
-              </button>
-              <Link to={`/blog-details/${id}`} className="read-more">Read More →</Link>
-            </div>
-          </div>
-        </div>
+        <span className="date">{date}</span>
       </div>
-      
+
+      {/* Cover Image */}
       {cover && !imageError && (
         <div className="blog-image">
-          <img 
-            src={cover} 
-            alt={title} 
+          <img
+            src={cover}
+            alt={title}
             className="cover"
             onLoad={handleImageLoad}
             onError={handleImageError}
-            style={{ display: imageLoaded ? 'block' : 'none' }}
+            style={{ display: imageLoaded ? "block" : "none" }}
           />
         </div>
       )}
+
+      {/* Blog Content */}
+      <div className="blog-main">
+        <h2 className="blog-title">{title}</h2>
+        <p className="desc">{description}</p>
+
+        <div className="blog-footer">
+          <div className="actions">
+            <button
+              className="btn-sm upvote"
+              onClick={() => setVotes(votes + 1)}
+            >
+              🔼 {votes}
+            </button>
+            <button className="btn-sm bookmark-btn" onClick={toggleBookmark}>
+              {bookmarked ? "🔖 Saved" : "🔖 Save"}
+            </button>
+            <Link to={`/blog-details/${id}`} className="btn btn-primary btn-sm">
+              Read More →
+            </Link>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

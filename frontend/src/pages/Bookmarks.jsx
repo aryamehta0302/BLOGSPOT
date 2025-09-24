@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import BlogCard from "../components/BlogCard";
-import "./Bookmarks.css";
 
 export default function Bookmarks() {
   const [bookmarks, setBookmarks] = useState([]);

@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
-import "./Register.css";
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -18,7 +17,6 @@ export default function Register() {
       return;
     }
     try {
-      // Change the URL if your backend runs on a different port
       const res = await axios.post("http://localhost:3000/api/users/create", {
         name,
         email,
@@ -38,32 +36,42 @@ export default function Register() {
 
   return (
     <div className="auth-page">
-      <div className="auth-card">
-        <h2>Register</h2>
+      <div className="card auth-card">
+        <h2 className="auth-title">Create an Account 🚀</h2>
+        <p className="auth-subtitle">Join us and start your journey today</p>
+
         <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Name"
-            value={name}
-            onChange={e => setName(e.target.value)}
-            required
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            required
-          />
-          <div className="gender-section">
-            <label style={{marginRight: '10px'}}>
+          <div className="auth-field">
+            <input
+              type="text"
+              placeholder="Full Name"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="auth-field">
+            <input
+              type="email"
+              placeholder="Email Address"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="auth-field">
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Gender Selection */}
+          <div className="auth-field gender-section">
+            <label>
               <input
                 type="radio"
                 name="gender"
@@ -84,10 +92,26 @@ export default function Register() {
               Female
             </label>
           </div>
-          <button type="submit">Register</button>
+
+          <button type="submit" className="btn btn-accent auth-btn">
+            Register
+          </button>
         </form>
-        {message && <p style={{ color: message.includes("success") ? "green" : "red" }}>{message}</p>}
-        <p>Already have an account? <Link to="/login">Login</Link></p>
+
+        {message && (
+          <p
+            style={{
+              marginTop: "1rem",
+              color: message.includes("success") ? "limegreen" : "red",
+            }}
+          >
+            {message}
+          </p>
+        )}
+
+        <p className="auth-footer">
+          Already have an account? <Link to="/login">Login</Link>
+        </p>
       </div>
     </div>
   );

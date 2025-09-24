@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import BlogCard from "../components/BlogCard";
-import "./Home.css";
 
-export default function Home() {
+export default function Home({ search = "" }) {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -12,17 +11,19 @@ export default function Home() {
     const fetchBlogs = async () => {
       try {
         const response = await axios.get("http://localhost:3000/api/blogs/");
-        const blogsData = response.data.map(blog => ({
+        const blogsData = response.data.map((blog) => ({
           id: blog._id,
           title: blog.title,
-          author: "Anonymous", // You can populate this with user data if needed
+          author: "Anonymous", // Replace with user info if available
           date: new Date(blog.date).toLocaleDateString("en-US", {
             month: "short",
             day: "numeric",
-            year: "numeric"
+            year: "numeric",
           }),
           description: blog.subtitle || blog.body.substring(0, 100) + "...",
-          cover: blog.titleImage || "https://source.unsplash.com/600x400/?blog,writing"
+          cover:
+            blog.titleImage ||
+            "https://source.unsplash.com/600x400/?blog,writing",
         }));
         setBlogs(blogsData);
       } catch (err) {
@@ -39,14 +40,18 @@ export default function Home() {
   if (loading) return <div className="home">Loading blogs...</div>;
   if (error) return <div className="home">{error}</div>;
 
+  const filteredBlogs = blogs.filter(
+    (blog) =>
+      blog.title.toLowerCase().includes(search.toLowerCase()) ||
+      blog.description.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="home">
-      {blogs.length === 0 ? (
-        <p>No blogs available.</p>
+      {filteredBlogs.length === 0 ? (
+        <p>No blogs found.</p>
       ) : (
-        blogs.map(blog => (
-          <BlogCard key={blog.id} {...blog} />
-        ))
+        filteredBlogs.map((blog) => <BlogCard key={blog.id} {...blog} />)
       )}
     </div>
   );
