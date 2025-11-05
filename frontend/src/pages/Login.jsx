@@ -14,7 +14,6 @@ export default function Login() {
     setMessage("");
     setLoading(true);
 
-    // Validation
     if (!email || !password) {
       setMessage("Email and password are required.");
       setLoading(false);
@@ -26,25 +25,21 @@ export default function Login() {
         email,
         password,
       });
-      
-      // Store user data and token
-      localStorage.setItem('token', res.data.token);
-      localStorage.setItem('user', JSON.stringify(res.data.user));
-      
+
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
       setMessage("Login successful! Redirecting...");
-      
-      // Clear form
+
       setEmail("");
       setPassword("");
-      
-      // Redirect to home page after 1 second
+
       setTimeout(() => {
-        navigate('/');
-        window.location.reload(); // Refresh to update navbar
+        navigate("/");
+        window.location.reload();
       }, 1000);
-      
     } catch (err) {
-      const errorMessage = err.response?.data?.message || "Login failed. Please try again.";
+      const errorMessage =
+        err.response?.data?.message || "Login failed. Please try again.";
       setMessage(errorMessage);
     } finally {
       setLoading(false);
@@ -53,48 +48,60 @@ export default function Login() {
 
   return (
     <div className="auth-page">
-      <div className="card auth-card">
-        <h2 className="auth-title">Welcome Back 👋</h2>
+      <div className="auth-card card" style={{ maxWidth: "400px" }}>
+        <h2 className="auth-title">Welcome Back</h2>
         <p className="auth-subtitle">Login to continue to your account</p>
 
         <form onSubmit={handleSubmit}>
           <div className="auth-field">
-            <input 
-              type="email" 
-              placeholder="Email Address" 
+            <label className="field-label">Email</label>
+            <input
+              type="email"
+              placeholder="example@gmail.com"
               value={email}
-              onChange={e => setEmail(e.target.value)}
-              required 
-            />
-          </div>
-          <div className="auth-field">
-            <input 
-              type="password" 
-              placeholder="Password" 
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              required 
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
 
-          <button type="submit" className="btn btn-primary auth-btn" disabled={loading}>
+          <div className="auth-field">
+            <label className="field-label">Password</label>
+            <input
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="btn btn-primary auth-btn"
+            disabled={loading}
+          >
             {loading ? "Logging in..." : "Login"}
           </button>
+
+          {message && (
+            <div
+              className={`auth-message ${
+                message.includes("successful") ? "success" : "error"
+              }`}
+            >
+              {message}
+            </div>
+          )}
         </form>
 
-        {message && (
-          <p
-            className={`auth-message ${
-              message.includes("successful") ? "success" : "error"
-            }`}
-          >
-            {message}
+        <div className="auth-footer">
+          <p>
+            Don’t have an account?{" "}
+            <Link to="/register" style={{ color: "#2563eb", fontWeight: "500" }}>
+              Register
+            </Link>
           </p>
-        )}
-
-        <p className="auth-footer">
-          Don't have an account? <Link to="/register">Register</Link>
-        </p>
+        </div>
       </div>
     </div>
   );

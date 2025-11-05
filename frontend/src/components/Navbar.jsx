@@ -10,9 +10,9 @@ export default function Navbar({ toggleTheme, theme, onSearch }) {
   }, []);
 
   const checkAuthStatus = () => {
-    const userData = localStorage.getItem('user');
-    const token = localStorage.getItem('token');
-    
+    const userData = localStorage.getItem("user");
+    const token = localStorage.getItem("token");
+
     if (userData && token) {
       setUser(JSON.parse(userData));
       setIsLoggedIn(true);
@@ -23,25 +23,23 @@ export default function Navbar({ toggleTheme, theme, onSearch }) {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setUser(null);
     setIsLoggedIn(false);
-    window.location.reload(); // Refresh page to update all components
+    window.location.reload();
   };
 
-  const getAvatarEmoji = (gender) => {
-    return gender === 'female' ? '👩' : '👨';
-  };
+  const getAvatarEmoji = (gender) => (gender === "female" ? "👩" : "👨");
 
   return (
-    <nav>
-      <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-        <Link to="/">
-          <h1>Blog Spot</h1>
+    <nav className="navbar-clean">
+      {/* Left: Logo + Search */}
+      <div className="nav-left">
+        <Link to="/" className="nav-logo">
+          Blog<span>Spot</span>
         </Link>
-        
-        {/* 🔎 Search Bar */}
+
         <div className="nav-search">
           <input
             type="text"
@@ -51,44 +49,32 @@ export default function Navbar({ toggleTheme, theme, onSearch }) {
         </div>
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", gap: "0.8rem" }}>
-        {/* Show different options based on authentication status */}
+      {/* Right: Buttons + Theme + Avatar */}
+      <div className="nav-right">
         {isLoggedIn ? (
           <>
-            {/* ➕ Add Blog */}
-            <Link to="/add-blog" className="btn btn-accent btn-sm">
-              ➕ Add Blog
-            </Link>
+            <Link to="/add-blog" className="nav-btn">Add Blog</Link>
+            <Link to="/" className="nav-btn">Home</Link>
+            <Link to="/bookmarks" className="nav-btn">Bookmarks</Link>
+            <Link to="/profile" className="nav-btn">Profile</Link>
 
-            {/* Navigation Links */}
-            <Link to="/" className="btn btn-primary btn-sm">Home</Link>
-            <Link to="/bookmarks" className="btn btn-primary btn-sm">Bookmarks</Link>
-            <Link to="/profile" className="btn btn-primary btn-sm">Profile</Link>
-            
-            {/* Logout Button */}
-            <button 
-              onClick={handleLogout}
-              className="btn btn-danger btn-sm"
-              style={{
-                background: "var(--danger)",
-                color: "white",
-                border: "none"
-              }}
-            >
+            <button onClick={handleLogout} className="nav-btn danger">
               Logout
             </button>
+
+            <div className="nav-avatar" title={user?.username}>
+              {getAvatarEmoji(user?.gender)}
+            </div>
           </>
         ) : (
           <>
-            {/* Guest Navigation */}
-            <Link to="/" className="btn btn-primary btn-sm">Home</Link>
-            <Link to="/bookmarks" className="btn btn-primary btn-sm">Bookmarks</Link>
-            <Link to="/login" className="btn btn-accent btn-sm">Login</Link>
-            <Link to="/register" className="btn btn-accent btn-sm">Register</Link>
+            <Link to="/" className="nav-btn">Home</Link>
+            <Link to="/bookmarks" className="nav-btn">Bookmarks</Link>
+            <Link to="/login" className="nav-btn">Login</Link>
+            <Link to="/register" className="nav-btn">Register</Link>
           </>
         )}
 
-        {/* 🌗 Theme Toggle */}
         <label className="theme-toggle">
           <input
             type="checkbox"

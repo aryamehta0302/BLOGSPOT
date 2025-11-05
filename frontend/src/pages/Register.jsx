@@ -11,16 +11,13 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const validateEmail = (email) => {
-    return email.endsWith('@gmail.com');
-  };
+  const validateEmail = (email) => email.endsWith("@gmail.com");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
     setLoading(true);
 
-    // Validation
     if (!name || !email || !password || !gender) {
       setMessage("All fields are required.");
       setLoading(false);
@@ -46,26 +43,23 @@ export default function Register() {
         password,
         gender,
       });
-      
-      // Store user data and token
-      localStorage.setItem('token', res.data.token);
-      localStorage.setItem('user', JSON.stringify(res.data.user));
-      
+
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
       setMessage("Registration successful! Redirecting to login...");
-      
-      // Clear form
+
       setName("");
       setEmail("");
       setPassword("");
       setGender("");
-      
-      // Redirect to login after 2 seconds
+
       setTimeout(() => {
-        navigate('/login');
+        navigate("/login");
       }, 2000);
-      
     } catch (err) {
-      const errorMessage = err.response?.data?.message || "Registration failed. Please try again.";
+      const errorMessage =
+        err.response?.data?.message ||
+        "Registration failed. Please try again.";
       setMessage(errorMessage);
     } finally {
       setLoading(false);
@@ -74,44 +68,54 @@ export default function Register() {
 
   return (
     <div className="auth-page">
-      <div className="card auth-card">
-        <h2 className="auth-title">Create an Account 🚀</h2>
-        <p className="auth-subtitle">Join us and start your journey today</p>
+      <div className="auth-card card" style={{ maxWidth: "400px" }}>
+        <h2 className="auth-title">Create Your Account</h2>
+        <p className="auth-subtitle">
+          Join BlogSpot and share your voice with the world.
+        </p>
 
         <form onSubmit={handleSubmit}>
           <div className="auth-field">
+            <label className="field-label">Full Name</label>
             <input
               type="text"
-              placeholder="Full Name"
+              placeholder="John Doe"
               value={name}
-              onChange={e => setName(e.target.value)}
-              required
-            />
-          </div>
-          <div className="auth-field">
-            <input
-              type="email"
-              placeholder="Email Address (@gmail.com only)"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="auth-field">
-            <input
-              type="password"
-              placeholder="Password (min. 6 characters)"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setName(e.target.value)}
               required
             />
           </div>
 
-          {/* Enhanced Gender Selection */}
+          <div className="auth-field">
+            <label className="field-label">Email</label>
+            <input
+              type="email"
+              placeholder="example@gmail.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="auth-field">
+            <label className="field-label">Password</label>
+            <input
+              type="password"
+              placeholder="At least 6 characters"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
           <div className="auth-field">
             <label className="field-label">Gender</label>
             <div className="gender-options">
-              <label className={`gender-option ${gender === "male" ? "selected" : ""}`}>
+              <label
+                className={`gender-option ${
+                  gender === "male" ? "selected" : ""
+                }`}
+              >
                 <input
                   type="radio"
                   name="gender"
@@ -119,9 +123,13 @@ export default function Register() {
                   checked={gender === "male"}
                   onChange={() => setGender("male")}
                 />
-                <span className="gender-text">👨 Male</span>
+                <span className="gender-text">Male</span>
               </label>
-              <label className={`gender-option ${gender === "female" ? "selected" : ""}`}>
+              <label
+                className={`gender-option ${
+                  gender === "female" ? "selected" : ""
+                }`}
+              >
                 <input
                   type="radio"
                   name="gender"
@@ -129,29 +137,38 @@ export default function Register() {
                   checked={gender === "female"}
                   onChange={() => setGender("female")}
                 />
-                <span className="gender-text">👩 Female</span>
+                <span className="gender-text">Female</span>
               </label>
             </div>
           </div>
 
-          <button type="submit" className="btn btn-accent auth-btn" disabled={loading}>
+          <button
+            type="submit"
+            className="btn btn-primary auth-btn"
+            disabled={loading}
+          >
             {loading ? "Creating Account..." : "Register"}
           </button>
+
+          {message && (
+            <div
+              className={`auth-message ${
+                message.includes("successful") ? "success" : "error"
+              }`}
+            >
+              {message}
+            </div>
+          )}
         </form>
 
-        {message && (
-          <p
-            className={`auth-message ${
-              message.includes("successful") ? "success" : "error"
-            }`}
-          >
-            {message}
+        <div className="auth-footer">
+          <p>
+            Already have an account?{" "}
+            <Link to="/login" style={{ color: "#2563eb", fontWeight: "500" }}>
+              Login
+            </Link>
           </p>
-        )}
-
-        <p className="auth-footer">
-          Already have an account? <Link to="/login">Login</Link>
-        </p>
+        </div>
       </div>
     </div>
   );
