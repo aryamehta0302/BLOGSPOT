@@ -260,7 +260,7 @@ This project was collaboratively developed by:
 - GitHub: [@aryamehta0302](https://github.com/aryamehta0302)
 - Role: Architecture design, UI/UX design, and frontend implementation
 
-**Deval** - Full-Stack Developer & Integration Specialist
+**Deval Shah** - Full-Stack Developer & Integration Specialist
 
 - GitHub: [@Deval2211](https://github.com/Deval2211)
 - Role: API connection between frontend and backend, database management, and deployment
