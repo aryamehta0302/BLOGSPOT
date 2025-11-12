@@ -14,7 +14,10 @@ router.post('/', async (req, res) => {
         }
 
         console.log(user);
-        if (password !== user.password) {
+        
+        // Use bcrypt to compare password with hashed password
+        const isMatch = await user.comparePassword(password);
+        if (!isMatch) {
             return res.status(400).json({ message: 'Wrong Password!' });
         }
 
